@@ -3,7 +3,6 @@ import mediapipe as mp
 import numpy as np
 from tensorflow.keras.models import load_model
 
-#actions = {0:'e', 1:'i', 3:'l', 4:'o', 5:'u', 6:'v', 7:'y'}
 actions= ['e', 'i', 'l', 'o', 'u', 'v', 'y']
 
 action_seq = []
@@ -13,10 +12,12 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
-model = load_model("/Users/kim-wonjun/proj/sltranslation/model/29model.hdf5")
+model = load_model("./sltranslation/model/59model.hdf5")
 
 cap = cv2.VideoCapture(0)
 # 비디오의 너비와 높이 설정
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 frame_width = int(cap.get(3))
 frame_height = int(cap.get(4))
 
@@ -91,11 +92,13 @@ with mp_hands.Hands(
                                         this_action = action
                                     
 
-                                    cv2.putText(image, this_action, org=(int(frame_width/2), int(frame_height/2)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
+
+                                    cv2.putText(image, this_action, org=(int(frame_width/2), int(frame_height*4/5)), fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1, color=(255, 255, 255), thickness=2)
                                 
         #좌우 반전
-        #cv2.imshow('Sign language translation', cv2.flip(image, 1))
+        
         cv2.imshow('Sign language translation', image)
+        #cv2.imshow('Sign language translation', cv2.flip(image, 1))
 
         key = cv2.waitKey(1) & 0xFF
         if (key == 27):
