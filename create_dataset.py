@@ -7,12 +7,6 @@ mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 mp_hands = mp.solutions.hands
 
-# gesture = {0:'a', 1:'b', 2:'c', 3:'d', 4:'e', 5:'f',
-#            6:'g', 7:'h', 8:'i', 9:'k', 10:'l', 11:'m',
-#            12:'n', 13:'o', 14:'p', 15:'q', 16:'r', 17:'s',
-#            18:'t', 19:'u', 20:'v', 21:'w', 22:'x', 23:'y'}
-idx = 19
-
 cap = cv2.VideoCapture(0)
 # 비디오의 너비와 높이 설정
 frame_width = int(cap.get(3))
@@ -67,18 +61,22 @@ with mp_hands.Hands(
                                 angle = np.arccos(np.einsum('nt,nt->n',
                                                             v[[0, 1, 2, 4, 5, 6, 8, 9, 10 ,12 ,13 ,14 ,16 ,17 ,18], :],
                                                             v[[1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15, 17, 18, 19], :]))
+                                
+                                # e = 4, i = 8, l = 10, o = 13 , u = 19, v = 20, y = 23
+
+                                idx = 23
+
                                 angle = np.degrees(angle)
                                 angle = np.append(angle, idx)
                                 data = np.array([angle], dtype=np.float32)
-                                
-                                #npy 형태로 저장하는 코드구현 
-                                #np.save('./sltranslation/dataset/a_data.npy', data)
 
                                 #csv 형태로 저장하는 코드구현
                                 df = pd.DataFrame(data)
-                                df.to_csv('./sltranslation/dataset/u_data.csv', mode='a', header=False, index=False)
+                                df.to_csv('./sltranslation/dataset/y_fdata.csv', mode='a', header=False, index=False)
         #좌우 반전
-        cv2.imshow('Sign language translation', cv2.flip(image, 1))
+        #cv2.imshow('Sign language translation', cv2.flip(image, 1))
+
+        cv2.imshow('Sign language translation', image)
 
         key = cv2.waitKey(1) & 0xFF
         if (key == 27):
